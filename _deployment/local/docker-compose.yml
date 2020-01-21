@@ -1,0 +1,64 @@
+version: '2.4'
+services:
+  api:
+    build:
+      context: ../../.
+      args:
+        - PROD=0
+    mem_limit: 256m
+    command: npm run start:dev
+    environment:
+      - NODE_ENV=development
+      - NODE_HOST=0.0.0.0
+      - NODE_PORT=3000
+      - NODE_LOG=on
+      - DATABASE=mongodb://mongo:27017/blizzz-local
+      - JWT_SECRET=blizzzSecret
+      - JWT_AUDIENCE=blizzz
+      - JWT_ISSUER=blizzz
+      - FACEBOOK_CLIENT_ID=
+      - FACEBOOK_CLIENT_SECRET=
+      - SENTRY_DSN=
+      - GOOGLE_CLIENT_ID=
+      - GOOGLE_CLIENT_SECRET=
+      - APPLE_KEY_ID=
+      - APPLE_KEY_PATH=
+      - APPLE_TEAM_ID=
+      - APPLE_CLIENT_ID=
+      - EMAIL_ENABLE=false
+      - EMAIL_FROM=
+      - EMAIL_KEY=
+      - VERIFY_EMAIL_TEMPLATE=
+      - VERIFY_EMAIL_ACTION_URL=http://localhost:3000/auth/verify-email
+      - FORGOT_PASSWORD_TEMPLATE=
+      - FORGOT_PASSWORD_ACTION_URL=http://localhost:3000/auth/forgot-password
+      - PUSH_USER_AUTH_KEY=
+      - PUSH_APP_AUTH_KEY=
+      - PUSH_APP_ID=
+    ports:
+      - 3000:3000
+      - 9229:9229
+    volumes:
+      - ../../src:/var/www/html/src
+    depends_on:
+      - mongo
+    networks:
+      - common
+
+  mongo:
+    image: mongo:4.0.4
+    mem_limit: 128m
+    volumes:
+      - mongo:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - common
+
+volumes:
+  mongo:
+    driver: local
+networks:
+  common:
+    external:
+      name: common

@@ -1,0 +1,63 @@
+[
+  {
+    "group": "admin",
+    "permissions": [
+      {
+        "resource": "*",
+        "methods": "*",
+        "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "user",
+    "permissions": [
+      {
+        "resource": "/users",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+
+      {
+        "resource": "devices/me",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "devices/me/:deviceId",
+        "methods": ["DELETE"],
+        "action": "allow"
+      },
+      {
+        "resource": "users/me",
+        "methods": ["GET", "PATCH"],
+        "action": "allow"
+      },
+      {
+        "resource": "users/:id",
+        "methods": ["GET", "PATCH"],
+        "action": "allow"
+      },
+      {
+        "resource": "/auth/resend-verification-email",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "/auth/signin/refresh/:refreshTokenId",
+        "methods": ["POST"],
+        "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "guest",
+    "permissions": [
+      {
+        "resource": "/auth/signin/refresh/:refreshTokenId",
+        "methods": ["POST"],
+        "action": "allow"
+      }
+    ]
+  }
+]

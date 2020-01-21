@@ -1,0 +1,46 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src",
+    "start": "node ./src/server.js",
+    "start:dev": "nodemon --inspect=0.0.0.0 ./src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.11.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-acl": "^2.0.5",
+    "express-async-handler": "^1.1.4",
+    "express-jwt": "^5.3.1",
+    "express-winston": "2.4.0",
+    "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.4.1",
+    "mongoose-hidden": "^1.6.0",
+    "mongoose-paginate": "^5.0.3",
+    "mongoose-unique-validator": "^2.0.2",
+    "onesignal-node": "^3.0.0",
+    "passport": "^0.4.0",
+    "passport-facebook-token": "^3.3.0",
+    "passport-token-google": "^0.1.2",
+    "postmark": "^2.2.4",
+    "pug": "^2.0.3",
+    "randomstring": "^1.1.5",
+    "raven": "^2.6.4",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "winston": "2.4.0"
+  }
+}
