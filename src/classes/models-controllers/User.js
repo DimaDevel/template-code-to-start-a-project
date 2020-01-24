@@ -74,7 +74,7 @@ class UserController extends BaseController {
    * 
    * @returns {object} users
    */
-  static async getUsersByGeoCoordinates(longitude, latitude, radius, paginateOpt) {
+  static async getUsersInRadius(longitude, latitude, radius, paginateOpt) {
     const users = await this.model.paginate({
       "coordinates.location": {
         $geoWithin: {

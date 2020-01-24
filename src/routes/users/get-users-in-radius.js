@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
   const limit = Number(query.limit) || 10;
 
   try {
-    const users = await User.getUsersByGeoCoordinates(longitude, latitude, radius, { page, limit });
+    const users = await User.getUsersInRadius(longitude, latitude, radius, { page, limit });
 
     res.json(users);
   } catch (error) {
