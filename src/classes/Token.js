@@ -3,6 +3,12 @@ const config = require('../config/config');
 const { getErrorObject } = require('../helpers/errors');
 
 class Token {
+  /**
+   * 
+   * @param {string} secret 
+   * @param {string} audience 
+   * @param {string} issuer 
+   */
   constructor(secret, audience, issuer) {
     if (!secret) throw new Error('Can not find secret for jwt.');
     if (!audience) throw new Error('Can not find audience for jwt');
@@ -11,7 +17,16 @@ class Token {
     this.audience = audience;
     this.issuer = issuer;
   }
+  /**
+   * @typedef tokenTypes
+   * @property {string} refresh token type
+   * @property {string} access token type
+   */
 
+  /**
+   * @returns {tokenTypes}
+   * Represent token types
+   */
   get tokenTypes() {
     return {
       refresh: 'refresh',
@@ -22,7 +37,12 @@ class Token {
   get invalidRefreshTokenError() {
     return getErrorObject('INVALID_REFRESH_TOKEN', 400);
   }
-
+  /**
+   * 
+   * @param {object} payload 
+   * @param {string} expiresIn 
+   * @param {object} type 
+   */
   create(payload, expiresIn = '1d', type) {
     return jwt.sign(payload, this.secret, { 
       expiresIn,
@@ -31,15 +51,24 @@ class Token {
       issuer: this.issuer
     });
   }
-
+  /**
+   * 
+   * @param {object}
+   */
   verify({ token, ignoreExpiration = false }) {
     return jwt.verify(token, this.secret, { ignoreExpiration });
   }
-
+  /**
+   * 
+   * @param  {...any} args 
+   */
   decode(...args) {
     return jwt.decode(...args);
   }
-
+  /**
+   * 
+   * @param {string} refreshToken 
+   */
   verifyRefreshToken(refreshToken) {
     const decoded = this.verify(refreshToken);
 
@@ -49,7 +78,11 @@ class Token {
 
     return true;
   }
-
+  /**
+   * 
+   * @param {object} user 
+   * @param {string} expiresIn 
+   */
   createIssueToken(user, expiresIn = '1d') {
     return this.create(
       {
@@ -60,7 +93,11 @@ class Token {
       this.tokenTypes.access
     );
   }
-
+  /**
+   * 
+   * @param {string} userId 
+   * @param {string} expiresIn 
+   */
   createRefreshToken(userId, expiresIn = '60d') {
     return this.create(
       {

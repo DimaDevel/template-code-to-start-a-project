@@ -35,12 +35,6 @@ function getErrorObject(systemCode, status = 500, error = null) {
     errorObject.systemCode = 'VALIDATION_ERROR';
   }
 
-  const nativeError = new Error();
-
-  nativeError.message = errorMessage;
-  nativeError.status = status;
-  nativeError.errorObject = errorObject;
-
   return {
     message: errorObject.message,
     status: error && error.status ? error.status : status

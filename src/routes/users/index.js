@@ -11,7 +11,9 @@ const ban = require('./ban');
 const unban = require('./unban');
 const getMe = require('./get-me');
 const updateMe = require('./update-me');
+const getUsersInRadius = require('./get-users-in-radius');
 
+router.get('/inRadius', asyncHandler(getUsersInRadius));
 router.get('/me', asyncHandler(getMe));
 router.patch('/me', asyncHandler(updateMe));
 router.post('/', asyncHandler(createUser));

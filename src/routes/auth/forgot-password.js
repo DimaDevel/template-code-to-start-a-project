@@ -1,13 +1,17 @@
+const createError = require('http-errors');
 const User = require('../../classes/models-controllers/User');
 const config = require('../../config/config');
 const email = require('../../classes/Email');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
+const { systemCodes } = require('./../../enums/errors');
 
 module.exports = async (req, res) => {
   const { body } = req;
   const tokenExpiresIn = '30min';
   const tokenExpiresInForTemplate = '30 minutes';
+
+  if (!body) throw createError(400);
 
   try {
     const user = await User.getOne({

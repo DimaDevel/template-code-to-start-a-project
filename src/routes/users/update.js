@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
   ) {
     throw getErrorObject('USER_UPDATE_NOT_ALLOWED', 403);
   }
-  //deleting dissalowed props for self update
+  //deleting disallowed props for self update
   if (req.userData.role !== userRoles.ADMIN) {
     delete body.password;
     User.deleteDisallowedProps(body);

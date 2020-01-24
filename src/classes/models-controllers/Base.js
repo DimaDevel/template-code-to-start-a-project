@@ -112,6 +112,7 @@ class MongoController {
     const doc = await this.getById(id);
 
     Object.assign(doc, object);
+    await doc.save();
     return doc;
   }
   /**
@@ -125,7 +126,7 @@ class MongoController {
     return this.model.paginate(filter, { page, limit, sort });
   }
   /**
-   * delete doc by porams in object
+   * delete doc by params in object
    * @param {{email:string, newPassword:string, oldPassword:string, firstName:string, lastName:string, _id:string}} object
    */
   static async delete(object) {

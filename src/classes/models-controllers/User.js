@@ -65,6 +65,31 @@ class UserController extends BaseController {
 
     return user;
   }
+  /**
+   * 
+   * @param {double} longitude 
+   * @param {double} latitude 
+   * @param {int} radius 
+   * @param {object} paginateOpt
+   * 
+   * @returns {object} users
+   */
+  static async getUsersByGeoCoordinates(longitude, latitude, radius, paginateOpt) {
+    const users = await this.model.paginate({
+      "coordinates.location": {
+        $geoWithin: {
+          $centerSphere: [ [ longitude, latitude ], radius/3963.2 ]
+        }
+      }
+    }, {
+      page: paginateOpt.page,
+      limit: paginateOpt.limit,
+      sort: paginateOpt.sort
+    });
+    if(!users) throw this.notFoundError;
+
+    return users;
+  }
 }
 
 module.exports = UserController;

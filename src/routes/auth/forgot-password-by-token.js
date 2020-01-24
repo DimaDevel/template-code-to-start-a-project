@@ -1,6 +1,8 @@
+const createError = require('http-errors');
 const User = require('../../classes/models-controllers/User');
 const verifyToken = require('../../helpers/verify-token');
 const { getErrorObject } = require('../../helpers/errors');
+const { systemCodes } = require('./../../enums/errors');
 
 module.exports = async (req, res) => {
   const { body } = req;
@@ -8,9 +10,12 @@ module.exports = async (req, res) => {
 
   try {
     const decodedToken = verifyToken(userToken);
+    if (!decodedToken) throw createError(400, systemCodes.TOKEN_INVALID);
 
     const user = await User.getById(decodedToken.userId);
 
+    if (!body || !body.password) throw createError(400, systemCodes.PASSWORD_NOT_VALID);
+    if (body.password !== body.confirm) throw createError(400, systemCodes.PASSWORD_NOT_VALID);
     user.password = body.password;
     await user.save();
 

@@ -14,7 +14,12 @@ const systemCodes = {
   USER_GET_NOT_ALLOWED: "You can't get another user!",
   DEVICE_NOT_FOUND: 'Device not found!',
   DEVICE_ID_REQUIRED: 'deviceId is required!',
-  REFRESH_TOKEN_EXPIRED: 'Sorry but your refresh token expired!'
+  REFRESH_TOKEN_EXPIRED: 'Sorry but your refresh token expired!',
+  TOKEN_INVALID: 'Invalid token received.',
+  PASSWORD_NOT_VALID: 'Password is invalid!',
+  LONGITUDE_NOT_VALID: 'Longitude not valid or was not sent!',
+  LATITUDE_NOT_VALID: 'Latitude not valid or was not sent!',
+  RADIUS_NOT_VALID: 'Radius not valid or was not sent!'
 };
 
 module.exports = {
