@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
       type: String
     },
     timeOfAction: {
-      type: Date,
+      type: Number,
       required: true
     },
     owner: {
@@ -23,24 +23,24 @@ const schema = new mongoose.Schema(
     },
     category: {
       type: mongoose.SchemaTypes.ObjectId,
-      required: true,
+      // required: true,
       ref: 'Category'
     },
     subCategory: {
       type: mongoose.SchemaTypes.ObjectId,
-      required: true,
+      // required: true,
       ref: 'SubCategory'
-    },
-    offerCoordinates: {
-      type: coordinatesSchema,
-      required: true
     },
     startDate: {
       type: Date,
-      required: true
+      // required: true
     },
     endDate: {
       type: Date,
+      // required: true
+    },
+    coordinates: {
+      type: coordinatesSchema,
       required: true
     }
   },

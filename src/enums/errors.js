@@ -1,6 +1,7 @@
 const systemCodes = {
   PATH_NOT_FOUND: 'Path not found!',
   USER_NOT_FOUND: 'User not found!',
+  OFFER_NOT_FOUND: 'Offer not found!',
   REFRESH_TOKEN_NOT_FOUND: 'RefreshToken not found!',
   USER_BANNED: 'You are banned!',
   BODY_IS_NULL: 'Body is required!',

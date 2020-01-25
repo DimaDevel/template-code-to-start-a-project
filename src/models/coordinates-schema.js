@@ -13,4 +13,7 @@ module.exports = new mongoose.Schema({
       required: true
     }
   }
+}, {
+  _id: false,
+  id: false
 });

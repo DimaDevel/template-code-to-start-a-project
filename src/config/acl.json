@@ -47,6 +47,21 @@
         "resource": "/auth/signin/refresh/:refreshTokenId",
         "methods": ["POST"],
         "action": "allow"
+      },
+      {
+        "resource": "offers/",
+        "methods": "*",
+        "action": "allow"
+      },
+      {
+        "resource": "offers/inRadius/*",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
+        "resource": "offers/:offerId",
+        "methods": ["GET"],
+        "action": "allow"
       }
     ]
   },

@@ -1,6 +1,7 @@
 const User = require('../../models/User');
 const BaseController = require('./Base');
 const { getErrorObject } = require('../../helpers/errors');
+const getInRadius = require('./helpers-for-models/find-in-radius-helper');
 
 class UserController extends BaseController {
   /**
@@ -17,7 +18,7 @@ class UserController extends BaseController {
     return getErrorObject('USER_NOT_FOUND', 404);
   }
   /**
-   * returns props for basic method deleteDissalowedProps
+   * returns props for basic method deleteDisallowedProps
    * @returns {String[]}
    */
   static get disAllowedProps() {
@@ -75,20 +76,7 @@ class UserController extends BaseController {
    * @returns {object} users
    */
   static async getUsersInRadius(longitude, latitude, radius, paginateOpt) {
-    const users = await this.model.paginate({
-      "coordinates.location": {
-        $geoWithin: {
-          $centerSphere: [ [ longitude, latitude ], radius/3963.2 ]
-        }
-      }
-    }, {
-      page: paginateOpt.page,
-      limit: paginateOpt.limit,
-      sort: paginateOpt.sort
-    });
-    if(!users) throw this.notFoundError;
-
-    return users;
+    return await getInRadius(this.model, longitude, latitude, radius, paginateOpt);
   }
 }
 

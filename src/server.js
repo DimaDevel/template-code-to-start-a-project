@@ -61,7 +61,7 @@ app.use(
 passport.use(facebookTokenStrategy);
 passport.use(googleTokenStrategy); */
 
-// local middlewares
+// local middleware
 // userByToken - check is exists user with userId from decoded JWT token and then sets his role in req.session.role for acl check
 app.use(asyncHandler(userByToken));
 
