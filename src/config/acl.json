@@ -6,6 +6,16 @@
         "resource": "*",
         "methods": "*",
         "action": "allow"
+      },
+      {
+        "resource": "interestCategory",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "interestCategory/:interestId",
+        "methods": ["DELETE", "PATCH"],
+        "action": "allow"
       }
     ]
   },
@@ -61,6 +71,16 @@
       {
         "resource": "offers/:offerId",
         "methods": ["GET", "PATCH", "DELETE"],
+        "action": "allow"
+      },
+      {
+        "resource": "interestCategory",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
+        "resource": "interestCategory/:interestId",
+        "methods": ["GET"],
         "action": "allow"
       }
     ]

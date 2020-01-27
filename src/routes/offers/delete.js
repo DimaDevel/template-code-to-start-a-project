@@ -1,6 +1,6 @@
 const Offer = require('./../../classes/models-controllers/Offer');
 const { getErrorObject } = require('./../../helpers/errors');
-const isOwner = require('./../../helpers/is-owner');
+const isOwner = require('./../../helpers/is-offer-owner');
 
 module.exports = async (req, res) => {
   const { id } = req.params;
