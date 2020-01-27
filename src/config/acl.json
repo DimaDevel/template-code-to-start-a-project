@@ -60,7 +60,7 @@
       },
       {
         "resource": "offers/:offerId",
-        "methods": ["GET"],
+        "methods": ["GET", "PATCH", "DELETE"],
         "action": "allow"
       }
     ]
