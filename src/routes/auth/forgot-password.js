@@ -1,9 +1,11 @@
 const createError = require('http-errors');
-const User = require('../../classes/models-controllers/User');
-const config = require('../../config/config');
-const email = require('../../classes/Email');
-const { getErrorObject } = require('../../helpers/errors');
-const Token = require('../../classes/Token');
+const error = require('debug')('app:error:forgot-password');
+const User = require('./../../classes/models-controllers/User');
+const config = require('./../../config/config');
+const email = require('./../../classes/Email');
+const { getErrorObject } = require('./../../helpers/errors');
+const Token = require('./../../classes/Token');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { body } = req;
@@ -42,7 +44,9 @@ module.exports = async (req, res) => {
       message:
         'An email with further instructions has been sent to your email address'
     });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

@@ -1,9 +1,11 @@
+const error = require('debug')('app:error:signup');
 const config = require('../../config/config');
 const User = require('../../classes/models-controllers/User');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
 const RefreshToken = require('../../classes/models-controllers/RefreshToken');
 const { sendVerificationEmail } = require('./helpers');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { body } = req;
@@ -27,7 +29,9 @@ module.exports = async (req, res) => {
     }
 
     res.json({ token: newToken, refreshToken });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

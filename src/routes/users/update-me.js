@@ -1,7 +1,9 @@
+const error = require('debug')('app:error:users/update-me');
 const User = require('../../classes/models-controllers/User');
 const passwordHelper = require('../../helpers/password');
 const { userRoles } = require('../../enums/user');
 const { getErrorObject } = require('../../helpers/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { body } = req;
@@ -32,7 +34,9 @@ module.exports = async (req, res) => {
     const user = await User.update(req.user.userId, body);
 
     res.json(user);
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

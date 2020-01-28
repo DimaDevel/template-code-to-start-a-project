@@ -1,6 +1,8 @@
+const error = require('debug')('app:error:verify-email');
 const User = require('../../classes/models-controllers/User');
 const verifyToken = require('../../helpers/verify-token');
 const { getErrorObject } = require('../../helpers/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { userToken } = req.params;
@@ -19,7 +21,9 @@ module.exports = async (req, res) => {
     await user.save();
 
     res.send({ message: 'Your email address has been verified successfully.' });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

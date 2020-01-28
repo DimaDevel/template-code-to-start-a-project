@@ -6,10 +6,10 @@ const cors = require('cors');
 const passport = require('passport');
 const acl = require('express-acl');
 const asyncHandler = require('express-async-handler');
-const Raven = require('raven');
 const config = require('./config/config');
 const noAuthPaths = require('./config/no-auth-paths');
 const email = require('./classes/Email');
+const bugTracker = require('./classes/BugTracker');
 require('./db/db'); /*
 const facebookTokenStrategy = require("./middleware/facebook-token-strategy");
 const googleTokenStrategy = require("./middleware/google-token-strategy"); */
@@ -26,15 +26,17 @@ const push = require('./classes/Push');
 const app = express();
 const port = config.NODE_PORT;
 
-// Sentry init
-Raven.config(config.SENTRY_DSN).install();
-app.use(Raven.requestHandler());
-
 // OneSignal init
 push.setOptions({
   userAuthKey: config.PUSH_USER_AUTH_KEY,
   appAuthKey: config.PUSH_APP_AUTH_KEY,
   appId: config.PUSH_APP_ID
+});
+
+// Sentry bag tracker init
+bugTracker.setOptions({
+  enabled: config.SENTRY_LOG === 'on',
+  url: config.SENTRY_URL
 });
 
 // Postmark init
@@ -43,6 +45,7 @@ email.setOptions({
   from: config.EMAIL_FROM
 });
 // middlewares init
+app.use(bugTracker.getClient().Handlers.requestHandler());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -63,13 +66,15 @@ passport.use(facebookTokenStrategy);
 passport.use(googleTokenStrategy); */
 
 // local middleware
-// userByToken - check is exists user with userId from decoded JWT token and then sets his role in req.session.role for acl check
+// userByToken - check is exists user with userId from decoded JWT token
+// and then sets his role in req.session.role for acl check
 app.use(asyncHandler(userByToken));
 
 // check is user banned and throw error if he is banned
 app.use(asyncHandler(checkIfUserIsBanned));
 
-// check limit in req.params, if anyone trying get more rows than config.MAX_QUERY_LIMIT limit sets equal config.MAX_QUERY_LIMIT
+// check limit in req.params, if anyone trying get more rows than config.MAX_QUERY_LIMIT limit
+// sets equal config.MAX_QUERY_LIMIT
 app.use(asyncHandler(requestLimit));
 
 // init express-acl that checking user access by his role in req.session.role
@@ -86,8 +91,8 @@ app.get(
 );
 
 // error handlers init
+app.use(bugTracker.getClient().Handlers.errorHandler());
 app.use(errorLogger());
-app.use(Raven.errorHandler());
 app.use(errorHandler);
 
 // throw error if path not found

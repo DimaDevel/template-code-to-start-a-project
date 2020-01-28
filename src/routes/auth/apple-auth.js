@@ -1,9 +1,11 @@
 const randomstring = require('randomstring');
+const error = require('debug')('app:error:apple-auth');
 const getAppleCruds = require('../../helpers/get-apple-cruds');
 const User = require('../../models/User');
 const { hash } = require('../../helpers/password');
 const { getErrorObject } = require('../../helpers/errors');
 const { socialAuth } = require('./helpers');
+const bugTracker = require('./../../classes/BugTracker');
 
 
 module.exports = async (req, res) => {
@@ -38,7 +40,9 @@ module.exports = async (req, res) => {
     }
 
     return socialAuth({ user }, res);
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

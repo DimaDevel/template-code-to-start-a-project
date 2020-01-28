@@ -1,8 +1,10 @@
+const error = require('debug')('app:error:signin');
 const User = require('../../classes/models-controllers/User');
 const passwordHelper = require('../../helpers/password');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
 const issueRefreshToken = require('../../classes/models-controllers/RefreshToken');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { body } = req;
@@ -26,7 +28,9 @@ module.exports = async (req, res) => {
     });
 
     res.json({ token, refreshToken });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

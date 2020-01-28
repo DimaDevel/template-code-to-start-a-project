@@ -1,5 +1,7 @@
+const error = require('debug')('app:error:interest-category/get');
 const InterestCategory = require('../../classes/models-controllers/InterestCategory');
 const { getErrorObject } = require('../../helpers/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { query } = req;
@@ -11,7 +13,9 @@ module.exports = async (req, res) => {
     const interestCategory = await InterestCategory.paginate(queryFilter, page, limit, query.sort);
 
     res.json(interestCategory);
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

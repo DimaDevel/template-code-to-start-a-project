@@ -1,8 +1,10 @@
 const createError = require('http-errors');
+const error = require('debug')('app:error:forgot-password-by-token');
 const User = require('../../classes/models-controllers/User');
 const verifyToken = require('../../helpers/verify-token');
 const { getErrorObject } = require('../../helpers/errors');
 const { systemCodes } = require('./../../enums/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { body } = req;
@@ -20,7 +22,9 @@ module.exports = async (req, res) => {
     await user.save();
 
     res.send({ message: 'New password has been set successfully.' });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
+const error = require('debug')('app:error:media/sign-url');
 const config = require('../../config/config');
 const { getErrorObject } = require('../../helpers/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 AWS.config.update({
   accessKeyId: config.S3_ACCESS_KEY,
@@ -31,7 +33,9 @@ module.exports = async (req, res) => {
   try {
     const signedUrl = await s3.getSignedUrl('putObject', params);
     res.json({ signedUrl });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

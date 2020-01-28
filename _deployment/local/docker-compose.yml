@@ -19,7 +19,8 @@ services:
       - JWT_ISSUER=blizzz
       - FACEBOOK_CLIENT_ID=
       - FACEBOOK_CLIENT_SECRET=
-      - SENTRY_DSN=
+      - SENTRY_URL=https://43dad6ef617a4c848dfe49b44ff406e3@sentry.alphax-ds.de/22
+      - SENTRY_LOG=on
       - GOOGLE_CLIENT_ID=
       - GOOGLE_CLIENT_SECRET=
       - APPLE_KEY_ID=

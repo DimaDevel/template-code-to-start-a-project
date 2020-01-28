@@ -2,6 +2,7 @@ const error = require('debug')('app:error:refresh-token');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
 const RefreshToken = require('../../classes/models-controllers/RefreshToken');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { refreshToken } = req.params;
@@ -24,6 +25,7 @@ module.exports = async (req, res) => {
     });
   } catch (err) {
     error(err);
+    bugTracker.captureException(err);
     throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

@@ -1,5 +1,7 @@
+const error = require('debug')('app:error:unbind');
 const Device = require('../../classes/models-controllers/Device');
 const { getErrorObject } = require('../../helpers/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { deviceId } = req.params;
@@ -8,7 +10,9 @@ module.exports = async (req, res) => {
     await Device.model.deleteMany({ deviceId });
 
     return res.json({ message: true });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

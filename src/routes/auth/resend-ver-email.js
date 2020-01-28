@@ -1,7 +1,9 @@
+const error = require('debug')('app:error:resend-ver-email');
 const User = require('../../classes/models-controllers/User');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
 const { sendVerificationEmail } = require('./helpers');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   try {
@@ -16,7 +18,9 @@ module.exports = async (req, res) => {
       message:
         'An email with further instructions has been sent to your email address'
     });
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

@@ -1,5 +1,7 @@
+const error = require('debug')('app:error:bind');
 const Device = require('../../classes/models-controllers/Device');
 const { getErrorObject } = require('../../helpers/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const user = req.userData;
@@ -18,7 +20,9 @@ module.exports = async (req, res) => {
     );
 
     return res.json(device);
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

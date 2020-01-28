@@ -1,5 +1,7 @@
+const error = require('debug')('app:error:interest-category/create');
 const InterestCategory = require('../../classes/models-controllers/InterestCategory');
 const { getErrorObject } = require('../../helpers/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { body } = req;
@@ -7,7 +9,9 @@ module.exports = async (req, res) => {
   try {
     const interestCategory = await InterestCategory.create(body);
     res.json(interestCategory);
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

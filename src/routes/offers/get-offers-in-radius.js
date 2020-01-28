@@ -1,7 +1,9 @@
+const error = require('debug')('app:error:offers/get-offers-in-radius');
 const createError = require('http-errors');
 const Offer = require('../../classes/models-controllers/Offer');
 const { getErrorObject } = require('../../helpers/errors');
 const { systemCodes } = require('./../../enums/errors');
+const bugTracker = require('./../../classes/BugTracker');
 
 module.exports = async (req, res) => {
   const { query } = req;
@@ -18,7 +20,9 @@ module.exports = async (req, res) => {
     const offers = await Offer.getOffersInRadius(longitude, latitude, radius, { page, limit });
 
     res.json(offers);
-  } catch (error) {
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    bugTracker.captureException(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };
