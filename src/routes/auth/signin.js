@@ -1,4 +1,3 @@
-const logger = require('../../helpers/logger');
 const User = require('../../classes/models-controllers/User');
 const passwordHelper = require('../../helpers/password');
 const { getErrorObject } = require('../../helpers/errors');

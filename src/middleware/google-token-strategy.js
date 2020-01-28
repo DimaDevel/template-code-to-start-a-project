@@ -1,8 +1,8 @@
-const GoogleTokenStrategy = require("passport-token-google").Strategy;
-const randomstring = require("randomstring");
-const config = require("../config/config");
-const User = require("../models/User");
-const { hash } = require("../helpers/password");
+const GoogleTokenStrategy = require('passport-token-google').Strategy;
+const randomstring = require('randomstring');
+const config = require('../config/config');
+const User = require('../models/User');
+const { hash } = require('../helpers/password');
 
 module.exports = new GoogleTokenStrategy(
   {
@@ -30,7 +30,7 @@ module.exports = new GoogleTokenStrategy(
         lastName: profile._json.family_name
       });
 
-      await newUser.save()
+      await newUser.save();
 
       return done(null, newUser);
     } catch (error) {

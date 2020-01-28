@@ -12,6 +12,7 @@ services:
       - NODE_HOST=0.0.0.0
       - NODE_PORT=3000
       - NODE_LOG=on
+      - DEBUG=app*
       - DATABASE=mongodb://mongo:27017/blizzz-local
       - JWT_SECRET=blizzzSecret
       - JWT_AUDIENCE=blizzz

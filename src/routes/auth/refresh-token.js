@@ -1,3 +1,4 @@
+const error = require('debug')('app:error:refresh-token');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
 const RefreshToken = require('../../classes/models-controllers/RefreshToken');
@@ -21,8 +22,8 @@ module.exports = async (req, res) => {
       token,
       refreshToken: newRefreshToken
     });
-  } catch (error) {
-    console.log(error);
-    throw getErrorObject('GENERAL_ERROR', 400, error);
+  } catch (err) {
+    error(err);
+    throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 };

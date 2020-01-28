@@ -9,22 +9,22 @@ module.exports = async (req, res) => {
 
   // check user access to update user by id
   if (
-    req.userData.role !== userRoles.ADMIN &&
-    req.user.userId.toString() !== id
+    req.userData.role !== userRoles.ADMIN
+    && req.user.userId.toString() !== id
   ) {
     throw getErrorObject('USER_UPDATE_NOT_ALLOWED', 403);
   }
-  //deleting disallowed props for self update
+  // deleting disallowed props for self update
   if (req.userData.role !== userRoles.ADMIN) {
     delete body.password;
     User.deleteDisallowedProps(body);
   }
 
   try {
-    //find current user doc
+    // find current user doc
     const oldUser = await User.getById(id);
 
-    //matching current password with body.oldPassword and sets new password for user if they matches
+    // matching current password with body.oldPassword and sets new password for user if they matches
     if (body.oldPassword && body.newPassword) {
       const match = await passwordHelper.match({
         password: body.oldPassword,
@@ -38,10 +38,10 @@ module.exports = async (req, res) => {
       delete body.oldPassword;
     }
 
-    //update user function
+    // update user function
     const user = await User.update(id, body);
 
-    //return updated user in response
+    // return updated user in response
     res.json(user);
   } catch (error) {
     throw getErrorObject('GENERAL_ERROR', 400, error);

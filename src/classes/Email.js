@@ -3,7 +3,7 @@ const { Client } = require('postmark');
 const chunk = (array, length) => {
   const chunks = [];
   let chunk = [];
-  for (let i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i += 1) {
     if (chunk.length >= length) {
       chunks.push(chunk);
       chunk = [];
@@ -45,6 +45,7 @@ class Email {
 
     return this.client;
   }
+
   /**
    * Method for send email message by already exists template and replace vars keys in template by vars values
    * @param {{from:string, template:string, to:string, vars:object}} param0
@@ -65,12 +66,13 @@ class Email {
         TemplateModel,
       });
   }
+
   /**
    * Method for send multiple email messages by already exists template and replace vars keys in template by vars values
    * @param {{from:string, template:string, to:string, vars:object}} param0
    */
   async sendEmailBatchWithTemplates(messages) {
-    const formattedMessages = messages.map(message => ({
+    const formattedMessages = messages.map((message) => ({
       From: message.from || this.from,
       TemplateId: message.template,
       To: message.to,
@@ -79,7 +81,7 @@ class Email {
 
     // split array into parts of 500 messages (Postmark limit on batch sending)
     const chunks = chunk(formattedMessages, 500);
-    const promises = chunks.map(async chunk => this.getClient().sendEmailBatchWithTemplates(chunk));
+    const promises = chunks.map(async (chunk) => this.getClient().sendEmailBatchWithTemplates(chunk));
     return Promise.all(promises);
   }
 }

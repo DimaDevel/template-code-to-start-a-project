@@ -1,9 +1,9 @@
 const { env } = process;
 
 module.exports = {
-  NODE_ENV: env.NODE_ENV || "development",
+  NODE_ENV: env.NODE_ENV || 'development',
   NODE_PORT: env.NODE_PORT || 3000,
-  DATABASE: env.DATABASE || "mongodb://mongo:27017/default-blizzz",
+  DATABASE: env.DATABASE || 'mongodb://mongo:27017/default-blizzz',
   MAX_QUERY_LIMIT: Number(env.MAX_QUERY_LIMIT) || 1000,
   JWT_SECRET: env.JWT_SECRET,
   JWT_AUDIENCE: env.JWT_AUDIENCE || 'blizzz',

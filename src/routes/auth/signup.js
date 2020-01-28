@@ -9,14 +9,14 @@ module.exports = async (req, res) => {
   const { body } = req;
 
   try {
-    //deleting restricted props for user self setted, like role
+    // deleting restricted props for user self setted, like role
     User.deleteDisallowedProps(body);
     const user = await User.create(body);
 
-    //generating JWT token for auth
+    // generating JWT token for auth
     const newToken = Token.createIssueToken(user, '1d');
 
-    //generating refresh token for creating new JWT token if current JWT token expired
+    // generating refresh token for creating new JWT token if current JWT token expired
     const { refreshToken } = await RefreshToken.create({
       userId: user._id,
       token: newToken

@@ -12,7 +12,7 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 
-//it's route for create sign url for file upload
+// it's route for create sign url for file upload
 module.exports = async (req, res) => {
   const { body } = req;
 

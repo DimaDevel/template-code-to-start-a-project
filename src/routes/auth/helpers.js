@@ -1,6 +1,6 @@
+const path = require('path');
 const logger = require('../../helpers/logger');
 const email = require('../../classes/Email');
-const path = require('path');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
 const RefreshToken = require('../../classes/models-controllers/RefreshToken');
@@ -26,7 +26,7 @@ async function socialAuth(req, res) {
 
   res.send({
     token,
-    refreshToken: refreshToken
+    refreshToken
   });
 }
 

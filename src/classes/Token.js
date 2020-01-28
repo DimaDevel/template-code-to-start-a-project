@@ -37,6 +37,7 @@ class Token {
   get invalidRefreshTokenError() {
     return getErrorObject('INVALID_REFRESH_TOKEN', 400);
   }
+
   /**
    * 
    * @param {object} payload 
@@ -44,13 +45,14 @@ class Token {
    * @param {object} type 
    */
   create(payload, expiresIn = '1d', type) {
-    return jwt.sign(payload, this.secret, { 
+    return jwt.sign(payload, this.secret, {
       expiresIn,
       header: { type },
       audience: this.audience,
       issuer: this.issuer
     });
   }
+
   /**
    * 
    * @param {object}
@@ -58,6 +60,7 @@ class Token {
   verify({ token, ignoreExpiration = false }) {
     return jwt.verify(token, this.secret, { ignoreExpiration });
   }
+
   /**
    * 
    * @param  {...any} args 
@@ -65,6 +68,7 @@ class Token {
   decode(...args) {
     return jwt.decode(...args);
   }
+
   /**
    * 
    * @param {string} refreshToken 
@@ -78,6 +82,7 @@ class Token {
 
     return true;
   }
+
   /**
    * 
    * @param {object} user 
@@ -93,6 +98,7 @@ class Token {
       this.tokenTypes.access
     );
   }
+
   /**
    * 
    * @param {string} userId 

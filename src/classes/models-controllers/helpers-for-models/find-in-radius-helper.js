@@ -1,6 +1,6 @@
 module.exports = async (model, longitude, latitude, radius, paginateOpt) => {
   const docs = await model.paginate({
-    "coordinates.location": {
+    'coordinates.location': {
       $geoWithin: {
         $centerSphere: [[longitude, latitude], radius / 3963.2]
       }

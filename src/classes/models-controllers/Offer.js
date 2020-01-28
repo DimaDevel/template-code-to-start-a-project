@@ -28,7 +28,7 @@ class UserController extends BaseController {
    * @returns {object} offers
    */
   static async getOffersInRadius(longitude, latitude, radius, paginateOpt) {
-    return await getInRadius(this.model, longitude, latitude, radius, paginateOpt);
+    return getInRadius(this.model, longitude, latitude, radius, paginateOpt);
   }
 }
 

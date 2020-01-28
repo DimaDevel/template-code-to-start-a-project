@@ -6,16 +6,16 @@ const { getErrorObject } = require('../../helpers/errors');
 module.exports = async (req, res) => {
   const { body } = req;
   try {
-    //find current user doc for check if user exists and then match his password
+    // find current user doc for check if user exists and then match his password
     const oldUser = await User.getById(req.user.userId);
 
-    //if user not admin he can't change disallowed props
+    // if user not admin he can't change disallowed props
     if (req.userData.role !== userRoles.ADMIN) {
       delete body.password;
       User.deleteDisallowedProps(body);
     }
 
-    //if body.oldPassword not matches current user password he can't update password.
+    // if body.oldPassword not matches current user password he can't update password.
     if (body.oldPassword && body.newPassword) {
       const match = await passwordHelper.match({
         password: body.oldPassword,

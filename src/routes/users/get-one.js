@@ -1,5 +1,4 @@
 const User = require('../../classes/models-controllers/User');
-const { userRoles } = require('../../enums/user');
 const { getErrorObject } = require('../../helpers/errors');
 
 module.exports = async (req, res) => {

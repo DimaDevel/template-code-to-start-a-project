@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const Offer = require('./../../classes/models-controllers/Offer');
 const { getErrorObject } = require('./../../helpers/errors');
 const isOwner = require('./../../helpers/is-offer-owner');

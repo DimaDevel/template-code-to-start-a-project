@@ -12,7 +12,7 @@ const systemCodes = {
   INVALID_APPLE_AUTH_PARAMS: 'Invalid apple auth params',
   USER_NOT_AUTHENTICATED: 'Unauthorized!',
   CREDENTIALS_NOT_VALID: 'Email or password is invalid!',
-  USER_GET_NOT_ALLOWED: "You can't get another user!",
+  USER_GET_NOT_ALLOWED: 'You can\'t get another user!',
   DEVICE_NOT_FOUND: 'Device not found!',
   DEVICE_ID_REQUIRED: 'deviceId is required!',
   REFRESH_TOKEN_EXPIRED: 'Sorry but your refresh token expired!',

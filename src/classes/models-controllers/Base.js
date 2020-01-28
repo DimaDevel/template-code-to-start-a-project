@@ -1,12 +1,14 @@
-const { Model, Types } = require('mongoose');
+const { Types } = require('mongoose');
+const createError = require('http-errors');
 const { getErrorObject } = require('../../helpers/errors');
+
 class MongoController {
   /**
    * returns basic mongoModel
    * @returns {Model}
    */
   static get model() {
-    throw `Model undefined!`;
+    throw createError(500, 'Model undefined!');
   }
 
   /**
@@ -14,7 +16,7 @@ class MongoController {
    * @returns {{message:string}}
    */
   static get notFoundError() {
-    throw `notFoundError undefined!`;
+    throw createError(500, 'notFoundError undefined!');
   }
 
   /**
@@ -31,6 +33,7 @@ class MongoController {
   static get disAllowedProps() {
     return [];
   }
+
   /**
    * check is valid ObjectId prop or not
    * @param {String} id
@@ -40,7 +43,7 @@ class MongoController {
       throw this.notFoundError;
     }
   }
-
+  /* eslint-disable */
   /**
    * Delete props from object, that disallowed to create/update by user input
    * @param {Object} object
@@ -67,6 +70,7 @@ class MongoController {
 
     return doc;
   }
+  /* eslint-enable */
 
   /**
    *
@@ -87,6 +91,7 @@ class MongoController {
 
     return doc;
   }
+
   /**
    *
    * @param {String} id
@@ -100,6 +105,7 @@ class MongoController {
 
     return doc;
   }
+
   /**
    *
    * @param {string} id
@@ -115,6 +121,7 @@ class MongoController {
     await doc.save();
     return doc;
   }
+
   /**
    *
    * @param {Object} filter
@@ -125,6 +132,7 @@ class MongoController {
   static paginate(filter, page, limit, sort) {
     return this.model.paginate(filter, { page, limit, sort });
   }
+
   /**
    * delete doc by params in object
    * @param {{email:string, newPassword:string, oldPassword:string, firstName:string, lastName:string, _id:string}} object
@@ -135,6 +143,7 @@ class MongoController {
 
     return doc;
   }
+
   /**
    *
    * @param {String} id

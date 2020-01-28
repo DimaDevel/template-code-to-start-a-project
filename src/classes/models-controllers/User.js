@@ -17,6 +17,7 @@ class UserController extends BaseController {
   static get notFoundError() {
     return getErrorObject('USER_NOT_FOUND', 404);
   }
+
   /**
    * returns props for basic method deleteDisallowedProps
    * @returns {String[]}
@@ -66,6 +67,7 @@ class UserController extends BaseController {
 
     return user;
   }
+
   /**
    * 
    * @param {double} longitude 
@@ -76,7 +78,7 @@ class UserController extends BaseController {
    * @returns {object} users
    */
   static async getUsersInRadius(longitude, latitude, radius, paginateOpt) {
-    return await getInRadius(this.model, longitude, latitude, radius, paginateOpt);
+    return getInRadius(this.model, longitude, latitude, radius, paginateOpt);
   }
 }
 

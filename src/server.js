@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejwt = require('express-jwt');
+const info = require('debug')('app:info:server');
 const cors = require('cors');
 const passport = require('passport');
 const acl = require('express-acl');
@@ -41,7 +42,7 @@ email.setOptions({
   key: config.EMAIL_KEY,
   from: config.EMAIL_FROM
 });
-//middlewares init
+// middlewares init
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -84,7 +85,7 @@ app.get(
   asyncHandler(async (req, res) => res.json('Start page!'))
 );
 
-//error handlers init
+// error handlers init
 app.use(errorLogger());
 app.use(Raven.errorHandler());
 app.use(errorHandler);
@@ -102,7 +103,7 @@ app.use(
 
 // app start
 app.listen(port, () => {
-  console.log(`Started on port ${port}`);
+  info(`Started on port ${port}`);
 });
 
 module.exports = { app };

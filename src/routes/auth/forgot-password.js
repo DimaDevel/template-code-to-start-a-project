@@ -4,7 +4,6 @@ const config = require('../../config/config');
 const email = require('../../classes/Email');
 const { getErrorObject } = require('../../helpers/errors');
 const Token = require('../../classes/Token');
-const { systemCodes } = require('./../../enums/errors');
 
 module.exports = async (req, res) => {
   const { body } = req;

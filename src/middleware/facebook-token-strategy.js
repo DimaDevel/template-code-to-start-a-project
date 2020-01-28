@@ -26,14 +26,14 @@ module.exports = new FacebookTokenStrategy(
       }
 
       const newUser = new User({
-          email: userEmail,
-          password: await hash({ password: randomstring.generate(8) }),
-          facebookId: profile._json.id,
-          firstName: profile._json.first_name,
-          lastName: profile._json.last_name
+        email: userEmail,
+        password: await hash({ password: randomstring.generate(8) }),
+        facebookId: profile._json.id,
+        firstName: profile._json.first_name,
+        lastName: profile._json.last_name
       });
 
-      await newUser.save()
+      await newUser.save();
 
       return done(null, newUser);
     } catch (error) {

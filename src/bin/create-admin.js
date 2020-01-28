@@ -13,14 +13,15 @@ const admin = new User({
   filledAt: Date.now(),
   verifiedAt: Date.now()
 });
-
+/* eslint-disable */
 admin
   .save()
-  .then(v => {
+  .then((v) => {
     console.log(v);
     process.exit();
   })
-  .catch(error => {
+  .catch((error) => {
     console.log(error.message);
     process.exit();
   });
+  /* eslint-enable */

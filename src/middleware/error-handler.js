@@ -1,5 +1,6 @@
 const config = require('../config/config');
 
+/* eslint-disable */
 // error handler
 module.exports = (err, req, res, next) => {
   // set locals, only providing error in development
@@ -10,3 +11,4 @@ module.exports = (err, req, res, next) => {
   res.status(err.status || 500);
   res.json(err.errorObject || { message: err.message });
 };
+/* eslint-enable */

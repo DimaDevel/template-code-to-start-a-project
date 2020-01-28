@@ -15,7 +15,7 @@ const options = {
   reconnectTries: Number.MAX_VALUE,
   reconnectInterval: 5000
 };
-
+/* eslint-disable */
 mongoose.connection.on('disconnected', () => {
   const errorMessage = 'MongoDB is disconnected';
   console.log(errorMessage);
@@ -23,6 +23,7 @@ mongoose.connection.on('disconnected', () => {
 mongoose.connection.on('reconnected', () => {
   console.log('MongoDB is reconnected');
 });
+/* eslint-enable */
 
 const connectWithRetry = () => {
   mongoose
@@ -30,7 +31,7 @@ const connectWithRetry = () => {
     .then(() => {
       logger.info('MongoDB is connected');
     })
-    .catch(error => {
+    .catch((error) => {
       logger.error(`MongoDB: ${error.message}`);
       logger.info('MongoDB: retrying to connect in 5 seconds');
       setTimeout(connectWithRetry, 5000);

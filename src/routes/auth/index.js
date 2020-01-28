@@ -1,7 +1,7 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const passport = require('passport');
-const { socialAuth } = require('./helpers');
+// const passport = require('passport');
+// const { socialAuth } = require('./helpers');
 
 const router = express.Router();
 
