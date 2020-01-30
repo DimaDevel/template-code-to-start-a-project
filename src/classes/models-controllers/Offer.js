@@ -3,7 +3,7 @@ const BaseController = require('./Base');
 const { getErrorObject } = require('../../helpers/errors');
 const getInRadius = require('./helpers-for-models/find-in-radius-helper');
 
-class UserController extends BaseController {
+class OfferController extends BaseController {
   /**
    * returns offer's Model
    */
@@ -32,4 +32,4 @@ class UserController extends BaseController {
   }
 }
 
-module.exports = UserController;
+module.exports = OfferController;

@@ -803,7 +803,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     post:
-      summary: Create an offer
+      summary: Create an business
       security:
         - Bearer: []
       parameters:
@@ -858,7 +858,7 @@ paths:
           type: string
         - name: interestCategory
           in: body
-          description: offer data to update
+          description: interest category data to update
           required: true
           schema:
             $ref: '#/definitions/InterestCategory'
@@ -890,6 +890,127 @@ paths:
           description: deleted interest category
           schema:
             $ref: '#/definitions/InterestCategory'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /business:
+    get:
+      summary: Get business
+      security:
+        - Bearer: []
+      parameters:
+        - name: limit
+          in: query
+          description: Max documents that will be returned
+          required: false
+          type: number
+        - name: page
+          in: query
+          description: Skip some documents
+          required: false
+          type: number
+      tags:
+        - Business
+      responses:
+        200:
+          description: Business array
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Business'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create an business
+      security:
+        - Bearer: []
+      parameters:
+        - name: business
+          in: body
+          description: business info
+          required: true
+          schema:
+            $ref: '#/definitions/Business'
+      tags:
+        - Business
+      responses:
+        201:
+          description: Business info
+          schema:
+            $ref: '#/definitions/Business'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /business/{businessId}:
+    get:
+      summary: Get specific business
+      security:
+        - Bearer: []
+      parameters:
+        - name: businessId
+          in: path
+          description: business id
+          required: true
+          type: string
+      tags:
+        - Business
+      responses:
+        200:
+          description: business response
+          schema:
+            $ref: '#/definitions/Business'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    patch:
+      summary: Partial business update
+      security:
+        - Bearer: []
+      parameters:
+        - name: businessId
+          in: path
+          description: business id
+          required: true
+          type: string
+        - name: business
+          in: body
+          description: business data to update
+          required: true
+          schema:
+            $ref: '#/definitions/Business'
+      tags:
+        - Business
+      responses:
+        200:
+          description: updated interest category
+          schema:
+            $ref: '#/definitions/Business'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete an business
+      security:
+        - Bearer: []
+      parameters:
+        - name: businessId
+          in: path
+          description: business id
+          required: true
+          type: string
+      tags:
+        - Business
+      responses:
+        200:
+          description: deleted business
+          schema:
+            $ref: '#/definitions/Business'
         default:
           description: unexpected error
           schema:
@@ -1037,8 +1158,6 @@ definitions:
     required:
       - name
       - description
-      - clientId
-      - workerId
     properties:
       name:
         type: string
@@ -1181,17 +1300,6 @@ definitions:
       confirm:
         type: string
 
-  Confirmed:
-    type: object
-    required:
-      - worker
-      - client
-    properties:
-      client:
-        type: boolean
-      worker:
-        type: boolean
-
   SuccessResponse:
     type: object
     properties:
@@ -1280,5 +1388,29 @@ definitions:
         type: string
       description:
         type: string
+  Business:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      owner:
+        type: string
+        description: user identifier
+      category:
+        type: string
+        description: category identifier
+      phone:
+        type: string
+      corporateEmail:
+        type: string
+      country:
+        type: string
+      city:
+        type: string
+      address:
+        type: string
+
   
   

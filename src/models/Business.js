@@ -1,20 +1,16 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
+const validator = require('validator');
 const renameId = require('../helpers/rename-id');
-const coordinatesSchema = require('./../models/coordinates-schema');
 
 const schema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true
     },
     description: {
       type: String
-    },
-    timeOfAction: {
-      type: Number,
-      required: true
     },
     owner: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -23,22 +19,30 @@ const schema = new mongoose.Schema(
     },
     category: {
       type: mongoose.SchemaTypes.ObjectId,
-      // required: true,
+      required: true,
       ref: 'InterestCategory'
     },
-    startDate: {
-      type: Date,
-      // required: true
+    phone: {
+      type: String
     },
-    endDate: {
-      type: Date,
-      // required: true
+    corporateEmail: {
+      type: String,
+      trim: true,
+      unique: true,
+      lowercase: true,
+      validate: {
+        isAsync: true,
+        validator: validator.isEmail,
+        message: '{VALUE} is not a valid email.'
+      }
     },
-    coordinates: {
-      type: coordinatesSchema,
-      required: true
+    country: {
+      type: String
     },
-    status: {
+    city: {
+      type: String
+    },
+    address: {
       type: String
     }
   },
@@ -55,4 +59,4 @@ const schema = new mongoose.Schema(
 
 schema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Offer', schema);
+module.exports = mongoose.model('Business', schema);

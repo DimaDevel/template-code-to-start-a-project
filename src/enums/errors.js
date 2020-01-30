@@ -21,7 +21,8 @@ const systemCodes = {
   LONGITUDE_NOT_VALID: 'Longitude not valid or was not sent!',
   LATITUDE_NOT_VALID: 'Latitude not valid or was not sent!',
   RADIUS_NOT_VALID: 'Radius not valid or was not sent!',
-  INTEREST_CATEGORY_NOT_FOUND: 'Interest category not found!'
+  INTEREST_CATEGORY_NOT_FOUND: 'Interest category not found!',
+  BUSINESS_NOT_FOUND: 'Business not found!'
 };
 
 module.exports = {
