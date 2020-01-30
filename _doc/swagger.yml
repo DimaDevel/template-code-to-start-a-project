@@ -1,0 +1,1284 @@
+swagger: '2.0'
+# the domain of the service
+host: %API_HOST%
+info:
+  title: Blizzz API
+  description: Documentation for Blizzz API
+  version: %API_VERSION%
+# array of all schemes that your API supports
+schemes:
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+# will be prefixed to all paths
+basePath: /
+produces:
+  - application/json
+paths:
+  /:
+    get:
+      summary: Base route
+      description: |
+          Just a base route to check whether api works
+      tags:
+        - Main
+      responses:
+        200:
+          description: An array of mind maps
+          schema:
+            $ref: '#/definitions/Main'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /auth/signin:
+    post:
+      summary: Sign in
+      description: |
+        Using this endpoint you are get AccessToken and RefreshToken. They should be used to request API endpoints.
+        AuthToken is valid 2 hours. RefreshToken is valid 60 days.
+        To create a request for heymate API you should pass AccessToken in the http header "Authorization".
+      parameters:
+        - name: credentials
+          in: body
+          description: User credentials that to be authenticated
+          required: true
+          schema:
+            $ref: '#/definitions/SignIn'
+      tags:
+        - Auth
+      responses:
+        201:
+          description: Token
+          schema:
+            $ref: '#/definitions/Token'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /auth/facebook:
+    post:
+      summary: Facebook authentication
+      parameters:
+        - name: credentials
+          in: body
+          description: User facebook token that to be authenticated
+          required: true
+          schema:
+            $ref: '#/definitions/FacebookToken'
+      tags:
+        - Auth
+      responses:
+        201:
+          description: Token
+          schema:
+            $ref: '#/definitions/Token'
+
+  /auth/google:
+    post:
+      summary: Google authentication
+      parameters:
+        - name: credentials
+          in: body
+          description: User google token that to be authenticated
+          required: true
+          schema:
+            $ref: '#/definitions/GoogleToken'
+      tags:
+        - Auth
+      responses:
+        201:
+          description: Token
+          schema:
+            $ref: '#/definitions/Token'
+
+  /auth/forgot-password:
+    post:
+      summary: Start reset password
+      parameters:
+        - name: credentials
+          in: body
+          description: User email for reset password
+          required: true
+          schema:
+            $ref: '#/definitions/Forgot'
+      tags:
+        - Auth
+      responses:
+        201:
+          description: successful result
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: successful result
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+
+  /auth/signin/forgot-password/{token}:
+    post:
+      summary: Change password
+      parameters:
+      - name: token
+        in: path
+        description: Token
+        required: true
+        type: string
+      - name: credentials
+        in: body
+        description: New user password and password confirm
+        required: true
+        schema:
+          $ref: '#/definitions/ResetPassword'
+      tags:
+      - Auth
+      responses:
+        301:
+          description: redirect to page "success reset"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /auth/refresh{refreshToken}:
+    post:
+      summary: Refresh token
+      description: |
+        Using this endpoint you can get new AccessToken and RefreshToken.
+        You should pass old RefreshToken into this endpoint to get new one.
+      parameters:
+        - name: refreshToken
+          in: path
+          description: Refresh token
+          required: true
+          type: string
+      tags:
+        - Auth
+      responses:
+        201:
+          description: Refresh token
+          schema:
+            $ref: '#/definitions/Token'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /auth/resend-verification-email:
+    post:
+      summary: send verification email
+      security:
+        - Bearer: []
+      tags:
+        - Auth
+      responses:
+          201:
+            description: Message
+            schema:
+              $ref: '#/definitions/Message'
+          default:
+            description: Unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+
+  /auth/verify-email/{userToken}:
+    get:
+      summary: send verification email
+      parameters:
+        - name: userToken
+          in: path
+          description: user token
+          required: true
+          type: string
+      security:
+        - Bearer: []
+      tags:
+        - Auth
+      responses:
+          201:
+            description: Message
+            schema:
+              $ref: '#/definitions/Message'
+          default:
+            description: Unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+  /auth/signup:
+    post:
+      summary: register a user
+      security:
+        - Bearer: []
+      parameters:
+        - name: user
+          in: body
+          description: user info to register
+          required: true
+          schema:
+            $ref: '#/definitions/Register'
+      tags:
+        - Auth
+      responses:
+        201:
+          description: Data about created user
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+
+  /users/me:
+    get:
+      summary: Get authorized user info
+      security:
+        - Bearer: []
+      tags:
+        - Users
+      responses:
+        200:
+          description: user info
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    patch:
+      summary: Update authorized user info
+      security:
+        - Bearer: []
+      parameters:
+        - name: user
+          in: body
+          description: user body that should be applied
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateUser'
+      tags:
+        - Users
+      responses:
+        200:
+          description: updated user info
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/{id}:
+    delete:
+      summary: Remove user personal data
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        200:
+          description: update user info
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/{id}/ban:
+    delete:
+      summary: Ban user
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        200:
+          description: update user info
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/{id}/unban:
+    delete:
+      summary: Unban user
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        200:
+          description: update user info
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/inRadius:
+    get:
+      summary: Get users in radius
+      security:
+        - Bearer: []
+      parameters:
+        - name: longitude
+          in: path
+          description: longitude
+          required: true
+          type: number
+        - name: latitude
+          in: path
+          description: latitude
+          required: true
+          type: number
+        - name: radius
+          in: path
+          description: radius
+          required: true
+          type: number
+      tags:
+        - Users
+      responses:
+        200:
+          description: users array
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        
+  /devices/me:
+    post:
+      summary: create new user device
+      security:
+        - Bearer: []
+      parameters:
+        - name: Devices
+          in: body
+          description: device info
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateDevices'
+      tags:
+        - Devices
+      responses:
+        201:
+          description: device info
+          schema:
+            $ref: '#/definitions/Devices'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    # get:
+    #   summary: Get user devices
+    #   security:
+    #     - Bearer: []
+    #   tags:
+    #     - Devices
+    #   responses:
+    #     200:
+    #       description: devices array
+    #       schema:
+    #         type: array
+    #         items:
+    #           $ref: '#/definitions/Devices'
+    #     default:
+    #       description: Unexpected error
+    #       schema:
+    #         $ref: '#/definitions/Error'
+
+  /devices/me/{id}:
+    # get:
+    #   summary: Get specific user device
+    #   security:
+    #     - Bearer: []
+    #   parameters:
+    #     - name: id
+    #       in: path
+    #       description: record identifier (MongoId)
+    #       required: true
+    #       type: string
+    #   tags:
+    #     - Devices
+    #   responses:
+    #     200:
+    #       description: user device info
+    #       schema:
+    #         $ref: '#/definitions/Devices'
+    #     default:
+    #       description: unexpected error
+    #       schema:
+    #         $ref: '#/definitions/Error'
+    delete:
+      summary: Delete user device
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          description: record identifier (MongoId)
+          required: true
+          type: string
+      tags:
+        - Devices
+      responses:
+        200:
+          description: deleted user device
+          schema:
+            $ref: '#/definitions/Message'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /devices/types:
+    get:
+      summary: Get all device's types
+      security:
+        - Bearer: []
+      tags:
+        - Devices
+      responses:
+        200:
+          description: device's type response
+          schema:
+            $ref: '#/definitions/DeviceTypes'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /users/{userId}:
+    get:
+      summary: Get specific user
+      security:
+        - Bearer: []
+      parameters:
+        - name: userId
+          in: path
+          description: user id
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        200:
+          description: user response
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users:
+    post:
+      summary: Create an user
+      security:
+        - Bearer: []
+      parameters:
+        - name: user
+          in: body
+          description: user info
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateUser'
+      tags:
+        - Users
+      responses:
+        201:
+          description: user info
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      summary: Get users
+      security:
+        - Bearer: []
+      tags:
+        - Users
+      responses:
+        200:
+          description: users array
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  # /offers/enums/statuses:
+  #   get:
+  #     summary: Get enum statuses
+  #     tags:
+  #       - Offers
+  #     responses:
+  #       200:
+  #         description: offer enum statuses info
+  #         schema:
+  #           $ref: '#/definitions/OfferEnumStatus'
+  #       default:
+  #         description: unexpected error
+  #         schema:
+  #           $ref: '#/definitions/Error'
+
+  /offers:
+    get:
+      summary: Get offers
+      security:
+        - Bearer: []
+      parameters:
+        - name: limit
+          in: query
+          description: Max documents that will be returned
+          required: false
+          type: number
+        - name: page
+          in: query
+          description: Skip some documents
+          required: false
+          type: number
+      tags:
+        - Offers
+      responses:
+        200:
+          description: offers array
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create an offer
+      security:
+        - Bearer: []
+      parameters:
+        - name: offer
+          in: body
+          description: offer info
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateOffer'
+      tags:
+        - Offers
+      responses:
+        201:
+          description: offer info
+          schema:
+            $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /offers/{offerId}:
+    get:
+      summary: Get specific offer
+      security:
+        - Bearer: []
+      parameters:
+        - name: offerId
+          in: path
+          description: offer id
+          required: true
+          type: string
+      tags:
+        - Offers
+      responses:
+        200:
+          description: offer response
+          schema:
+            $ref: '#/definitions/Offer'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    patch:
+      summary: Partial offer update
+      security:
+        - Bearer: []
+      parameters:
+        - name: offerId
+          in: path
+          description: offer id
+          required: true
+          type: string
+        - name: offer
+          in: body
+          description: offer data to update
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateOffer'
+      tags:
+        - Offers
+      responses:
+        200:
+          description: updated offer
+          schema:
+            $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete an offer
+      security:
+        - Bearer: []
+      parameters:
+        - name: offerId
+          in: path
+          description: offer id
+          required: true
+          type: string
+      tags:
+        - Offers
+      responses:
+        200:
+          description: deleted offer
+          schema:
+            $ref: '#/definitions/Offer'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  # /offers/{offerId}/archive:
+  #   post:
+  #     summary: Archive an offer
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - name: offerId
+  #         in: path
+  #         description: offer id
+  #         required: true
+  #         type: string
+  #     tags:
+  #       - Offers
+  #     responses:
+  #       201:
+  #         description: successful response
+  #         schema:
+  #           $ref: '#/definitions/SuccessResponse'
+  #       default:
+  #         description: Unexpected error
+  #         schema:
+  #           $ref: '#/definitions/Error'
+
+  # /offers/{offerId}/restore:
+  #   post:
+  #     summary: Restore an offer
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - name: offerId
+  #         in: path
+  #         description: offer id
+  #         required: true
+  #         type: string
+  #     tags:
+  #       - Offers
+  #     responses:
+  #       201:
+  #         description: successful response
+  #         schema:
+  #           $ref: '#/definitions/Offer'
+  #       default:
+  #         description: Unexpected error
+  #         schema:
+  #           $ref: '#/definitions/Error'
+
+  # /offers/{offerId}/softDelete:
+  #   post:
+  #     summary: Soft delete an offer
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - name: offerId
+  #         in: path
+  #         description: offer id
+  #         required: true
+  #         type: string
+  #     tags:
+  #       - Offers
+  #     responses:
+  #       201:
+  #         description: successful response
+  #         schema:
+  #           $ref: '#/definitions/SuccessResponse'
+  #       default:
+  #         description: Unexpected error
+  #         schema:
+  #           $ref: '#/definitions/Error'
+  /offers/inRadius:
+    get:
+      summary: Get offers in radius
+      security:
+        - Bearer: []
+      parameters:
+        - name: longitude
+          in: path
+          description: longitude
+          required: true
+          type: number
+        - name: latitude
+          in: path
+          description: latitude
+          required: true
+          type: number
+        - name: radius
+          in: path
+          description: radius
+          required: true
+          type: number
+      tags:
+        - Offers
+      responses:
+        200:
+          description: offers array
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /interestCategories:
+    get:
+      summary: Get interest categories
+      security:
+        - Bearer: []
+      parameters:
+        - name: limit
+          in: query
+          description: Max documents that will be returned
+          required: false
+          type: number
+        - name: page
+          in: query
+          description: Skip some documents
+          required: false
+          type: number
+      tags:
+        - Interest Categories
+      responses:
+        200:
+          description: interest categories array
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InterestCategory'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create an offer
+      security:
+        - Bearer: []
+      parameters:
+        - name: interest category
+          in: body
+          description: interest category info
+          required: true
+          schema:
+            $ref: '#/definitions/InterestCategory'
+      tags:
+        - Interest Categories
+      responses:
+        201:
+          description: interest categories info
+          schema:
+            $ref: '#/definitions/InterestCategory'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /interestCategories/{interestCategoryId}:
+    get:
+      summary: Get specific interest category
+      security:
+        - Bearer: []
+      parameters:
+        - name: interestCategoryId
+          in: path
+          description: interest category id
+          required: true
+          type: string
+      tags:
+        - Interest Categories
+      responses:
+        200:
+          description: interest category response
+          schema:
+            $ref: '#/definitions/InterestCategory'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    patch:
+      summary: Partial interest category update
+      security:
+        - Bearer: []
+      parameters:
+        - name: interestCategoryId
+          in: path
+          description: interest category id
+          required: true
+          type: string
+        - name: interestCategory
+          in: body
+          description: offer data to update
+          required: true
+          schema:
+            $ref: '#/definitions/InterestCategory'
+      tags:
+        - Interest Categories
+      responses:
+        200:
+          description: updated interest category
+          schema:
+            $ref: '#/definitions/InterestCategory'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete an interest category
+      security:
+        - Bearer: []
+      parameters:
+        - name: interestCategoryId
+          in: path
+          description: interest category id
+          required: true
+          type: string
+      tags:
+        - Interest Categories
+      responses:
+        200:
+          description: deleted interest category
+          schema:
+            $ref: '#/definitions/InterestCategory'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+ 
+definitions:
+
+  ListStripeExternalAccounts:
+    type: object
+    properties:
+      listUserBankAccounts:
+        type: object
+      listUserCards:
+        type: object
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      name:
+        type: string
+
+  User:
+    type: object
+    required:
+      - email
+    properties:
+      id:
+        type: string
+        description: generates automatically
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      profilePicture:
+        type: string
+        description: picture URL
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      deletedAt:
+        type: string
+        format: date-time
+      emailConfirmed:
+        type: boolean
+
+  UpdateUser:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      description:
+        type: string
+      profilePicture:
+        type: string
+        description: picture URL
+      emailConfirmed:
+        type: boolean
+
+  OfferEnumStatus:
+    type: object
+    properties:
+      opened:
+        type: string
+        description: opened
+      closed:
+        type: string
+        description: closed
+      archived:
+        type: string
+        description: archived
+
+  Offer:
+    type: object
+    required:
+      - name
+      - description
+      - status
+      - type
+    properties:
+      id:
+        type: string
+        description: generates automatically
+      prettyId:
+        type: number
+        description: prettyId
+      name:
+        type: string
+        description: offer name
+      description:
+        type: string
+        description: offer description
+      photos:
+        type: array
+        items:
+          type: string
+        description: photos that could be attached to the offer
+      state:
+        type: string
+      ownerId:
+        type: string
+        description: offer owner
+      status:
+        type: string
+        enum:
+          - opened
+          - closed
+        description: whether offer is still open
+      duration:
+        type: number
+        description: in hours
+      start:
+        type: string
+        format: date-time
+        description: job should be started this date
+      end:
+        type: string
+        format: date-time
+        description: job should be end this date
+      link:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+
+  UpdateOffer:
+    type: object
+    required:
+      - name
+      - description
+      - clientId
+      - workerId
+    properties:
+      name:
+        type: string
+        description: offer name
+      description:
+        type: string
+        description: offer description
+      photos:
+        type: array
+        items:
+          type: string
+        description: photos that could be attached to the offer
+      state:
+        type: string
+      status:
+        type: string
+        enum:
+          - opened
+          - closed
+        description: whether offer is still open
+      duration:
+        type: number
+        description: in hours
+      start:
+        type: string
+        format: date-time
+        description: job should be started this date
+      end:
+        type: string
+        format: date-time
+        description: job should be end this date
+      referenceNumber:
+        type: string
+    
+  Register:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      livingArea:
+        type: string
+      coordinates:
+        type: object
+        properties:
+          name:
+            type: string
+          location:
+            type: string
+          coordinates:
+            type: array
+            items:
+              type: number
+
+  SignIn:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+  FacebookToken:
+    type: object
+    required:
+      - access_token
+    properties:
+      access_token:
+        type: string
+        description: Facebook token
+
+  GoogleToken:
+    type: object
+    required:
+      - access_token
+    properties:
+      access_token:
+        type: string
+        description: Google token
+  RefreshToken:
+    type: object
+    required:
+      - refreshToken
+    properties:
+      refreshToken:
+        type: string
+        description: Refresh token
+
+  Forgot:
+    type: object
+    required:
+      - email
+    properties:
+      email:
+        type: string
+
+  Token:
+    type: object
+    required:
+      - accessToken
+      - refreshToken
+    properties:
+      accessToken:
+        type: string
+        description: Access JWT token
+      refreshToken:
+        type: string
+        description: Refresh JWT token
+
+  PasswordReset:
+    type: object
+    required:
+      - oldPassword
+      - newPassword
+    properties:
+      oldPassword:
+        type: string
+      newPasword:
+        type: string
+
+  ResetPassword:
+    type: object
+    required:
+      - password
+      - confirm
+    properties:
+      password:
+        type: string
+      confirm:
+        type: string
+
+  Confirmed:
+    type: object
+    required:
+      - worker
+      - client
+    properties:
+      client:
+        type: boolean
+      worker:
+        type: boolean
+
+  SuccessResponse:
+    type: object
+    properties:
+      result:
+        type: boolean
+  Devices:
+    type: object
+    required:
+      - deviceId
+      - deviceType
+    properties:
+      id:
+        type: string
+        description: generates automatically
+      userId:
+        type: string
+        description: user identifier
+      deviceId:
+        type: string
+        description: user identifier in service notification
+      deviceType:
+        type: number
+        description: device type in service nontification
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  UpdateDevices:
+    type: object
+    required:
+      - deviceId
+      - deviceType
+    properties:
+      deviceId:
+        type: string
+        description: user identifier in service notification
+      deviceType:
+        type: number
+        description: device type in service nontification
+  FileUpload:
+    type: object
+    properties:
+      Location:
+        type: string
+        description: link to uploaded file
+      Bucket:
+        type: string
+        description: bucket name
+      Key:
+        type: string
+        description: file name
+      ETag:
+        type: string
+        description: ETag
+  
+  NewEmail:
+    type: object
+    properties:
+      newEmail:
+        type: string
+  Main:
+    type: object
+    properties:
+      message:
+        type: string
+        description: new email address
+  Message:
+    type: object
+    properties:
+      message:
+        type: string
+  DeviceTypes:
+    type: object
+    properties:
+      android:
+        type: string
+      ios:
+        type: string
+
+  InterestCategory:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+  
+  

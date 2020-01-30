@@ -17,7 +17,7 @@ router.use('/auth', authRoutes);
 router.use('/users', usersRoutes);
 router.use('/devices', devicesRoutes);
 router.use('/offers', offersRoutes);
-router.use('/interestCategory', interestCategory);
+router.use('/interestCategories', interestCategory);
 // router.use('/media', mediaRoutes);
 
 // init route for debug info from client

@@ -69,6 +69,9 @@ const schema = new mongoose.Schema(
       enum: Object.values(userRoles),
       default: userRoles.USER
     },
+    profilePicture: {
+      type: String
+    },
     bannedAt: {
       type: Date
     },
@@ -84,6 +87,9 @@ const schema = new mongoose.Schema(
     coordinates: {
       type: coordinatesSchema,
       required: true
+    },
+    emailConfirmed: {
+      type: Boolean
     }
   },
   {

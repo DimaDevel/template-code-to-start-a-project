@@ -1,0 +1,16 @@
+version: "3"
+services:
+  swagger:
+    build: ../../_doc
+    ports:
+      - 3030:80
+    environment:
+      - LOGSPOUT=ignore
+      - API_VERSION=0.0.1
+      - API_HOST=localhost
+    networks: 
+      - public
+networks:
+  public:
+    external:
+      name: public
