@@ -7,12 +7,15 @@
     "precommit": "npm run lint",
     "lint": "eslint --ignore-path .gitignore ./",
     "lint:fix": "eslint --fix --ignore-path .gitignore ./",
-    "start": "node ./src/server.js",
-    "start:dev": "nodemon --inspect=0.0.0.0 ./src/server.js"
+    "start": "node ./src",
+    "start:dev": "nodemon --inspect=0.0.0.0 ./src",
+    "test": "NODE_ENV=${NODE_ENV:-test} ava -v ./test/**/*.test.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "ava": "^3.1.0",
+    "chai": "^4.2.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.20.0",
@@ -20,7 +23,8 @@
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "git-pre-commit": "^2.1.4",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "@sentry/node": "^5.11.1",

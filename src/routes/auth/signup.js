@@ -28,7 +28,9 @@ module.exports = async (req, res) => {
       await sendVerificationEmail(user, newToken);
     }
 
-    res.json({ token: newToken, refreshToken });
+    res
+      .status(201)
+      .json({ token: newToken, refreshToken });
   } catch (err) {
     error(err);
     bugTracker.captureException(err);

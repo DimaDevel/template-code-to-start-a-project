@@ -1,0 +1,63 @@
+version: '3'
+services:
+  api:
+    build:
+      context: ../../.
+      args:
+        - PROD=0
+    command: '/bin/sh -c "while true; do ping 8.8.8.8; done"'
+    environment:
+      - NODE_ENV=development
+      - NODE_HOST=0.0.0.0
+      - NODE_PORT=3000
+      - NODE_LOG=on
+      - DEBUG=app*
+      - DATABASE=mongodb://mongo:27017/blizzz-local
+      - JWT_SECRET=blizzzSecret
+      - JWT_AUDIENCE=blizzz
+      - JWT_ISSUER=blizzz
+      - FACEBOOK_CLIENT_ID=
+      - FACEBOOK_CLIENT_SECRET=
+      - SENTRY_URL=https://43dad6ef617a4c848dfe49b44ff406e3@sentry.alphax-ds.de/22
+      - SENTRY_LOG=on
+      - GOOGLE_CLIENT_ID=
+      - GOOGLE_CLIENT_SECRET=
+      - APPLE_KEY_ID=
+      - APPLE_KEY_PATH=
+      - APPLE_TEAM_ID=
+      - APPLE_CLIENT_ID=
+      - EMAIL_ENABLE=false
+      - EMAIL_FROM=
+      - EMAIL_KEY=
+      - VERIFY_EMAIL_TEMPLATE=
+      - VERIFY_EMAIL_ACTION_URL=http://localhost:3000/auth/verify-email
+      - FORGOT_PASSWORD_TEMPLATE=
+      - FORGOT_PASSWORD_ACTION_URL=http://localhost:3000/auth/forgot-password
+      - PUSH_USER_AUTH_KEY=
+      - PUSH_APP_AUTH_KEY=
+      - PUSH_APP_ID=
+    ports:
+      - 3000:3000
+      - 9229:9229
+    volumes:
+      - ../../src:/var/www/html/src
+      - ../../test:/var/www/html/test
+    depends_on:
+      - mongo
+    networks:
+      - testnet
+
+  mongo:
+    image: mongo:4.0.4
+    ports:
+      - 27019:27017
+    networks:
+      - testnet
+
+volumes:
+  mongo:
+    driver: local
+networks:
+  testnet:
+    external:
+      name: testnet

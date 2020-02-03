@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejwt = require('express-jwt');
-const info = require('debug')('app:info:server');
 const cors = require('cors');
 const passport = require('passport');
 const acl = require('express-acl');
@@ -24,7 +23,6 @@ const requestLimit = require('./middleware/query-limit');
 const push = require('./classes/Push');
 
 const app = express();
-const port = config.NODE_PORT;
 
 // OneSignal init
 push.setOptions({
@@ -87,7 +85,7 @@ app.use(router);
 // init start page
 app.get(
   '/',
-  asyncHandler(async (req, res) => res.json('Start page!'))
+  asyncHandler(async (req, res) => res.json('Welcome to Blizzz API!'))
 );
 
 // error handlers init
@@ -105,10 +103,5 @@ app.use(
     );
   })
 );
-
-// app start
-app.listen(port, () => {
-  info(`Started on port ${port}`);
-});
 
 module.exports = { app };
