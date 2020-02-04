@@ -76,7 +76,7 @@ test.serial('PATCH /users/:{userId}: Should update user in DB', async (t) => {
   t.is(result.body.lastName, newLastName);
 });
 
-test.serial('GET /users/inRadius: Should un ban user.', async (t) => {
+test.serial('GET /users/inRadius: Should return all users in radius.', async (t) => {
 
   const result = await request(app)
     .get('/users/inRadius?longitude=32.097928135369&latitude=46.94961116636724&radius=5&limit=50')

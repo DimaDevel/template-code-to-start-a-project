@@ -12,5 +12,5 @@ module.exports = async (offerId, user) => {
     throw getErrorObject('GENERAL_ERROR', 400, err);
   }
 
-  if (user.userId.toString() !== offer.owner.toString()) throw createError(403, 'Only offer creator can modify.');
+  if (user.userId.toString() !== offer.ownerId.toString()) throw createError(403, 'Only offer creator can modify.');
 };

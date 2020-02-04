@@ -12,7 +12,7 @@ const schema = new mongoose.Schema(
     description: {
       type: String
     },
-    owner: {
+    ownerId: {
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'User'

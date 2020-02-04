@@ -9,6 +9,7 @@ const usersRoutes = require('./users');
 const devicesRoutes = require('./devices');
 const offersRoutes = require('./offers');
 const interestCategory = require('./interest-category');
+const business = require('./business');
 // commented while not was init s3
 // const mediaRoutes = require('./media');
 
@@ -18,6 +19,7 @@ router.use('/users', usersRoutes);
 router.use('/devices', devicesRoutes);
 router.use('/offers', offersRoutes);
 router.use('/interestCategories', interestCategory);
+router.use('/business', business);
 // router.use('/media', mediaRoutes);
 
 // init route for debug info from client

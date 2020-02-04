@@ -16,9 +16,8 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    owner: {
+    ownerId: {
       type: mongoose.SchemaTypes.ObjectId,
-      required: true,
       ref: 'User'
     },
     category: {

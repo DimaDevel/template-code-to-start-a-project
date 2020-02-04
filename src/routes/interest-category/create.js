@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
 
   try {
     const interestCategory = await InterestCategory.create(body);
-    res.json(interestCategory);
+    res.status(201).json(interestCategory);
   } catch (err) {
     error(err);
     bugTracker.captureException(err);
