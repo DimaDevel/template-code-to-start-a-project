@@ -7,11 +7,20 @@ const getAuthToken = require('./../../helpers/get-auth-token');
 const Business = require('./../../../src/classes/models-controllers/Business');
 const User = require('./../../../src/classes/models-controllers/User');
 const { userRoles } = require('./../../../src/enums/user');
+const { testInterestCategory1 } = require('./../../helpers/get-test-interest-categories');
 
 let token;
 let testBusiness;
 test.before(async () => {
   token = await getAuthToken(testUser1);
+  const userFromDB = await User.getOne({ email: testUser1.email });
+  userFromDB.role = userRoles.ADMIN;
+  await userFromDB.save();
+  await request(app)
+    .post('/interestCategories')
+    .set('content-type', 'application/json')
+    .set('Authorization', `Bearer ${token}`)
+    .send(testInterestCategory1);
   testBusiness = await getTestBusiness();
 });
 

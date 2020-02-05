@@ -12,7 +12,7 @@ test.before(async () => {
   token = await getAuthToken(testUser1);
 });
 
-test.serial('POST /offers: Should create new offer.', async (t) => {
+test.serial('POST /interestCategories: Should create new interest category.', async (t) => {
   const userFromDB = await User.getOne({ email: testUser1.email });
   userFromDB.role = userRoles.ADMIN;
   await userFromDB.save();
