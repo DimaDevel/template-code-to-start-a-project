@@ -37,7 +37,7 @@
     "express-acl": "^2.0.5",
     "express-async-handler": "^1.1.4",
     "express-jwt": "^5.3.1",
-    "express-winston": "2.4.0",
+    "express-winston": "2.5.0",
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.1",
