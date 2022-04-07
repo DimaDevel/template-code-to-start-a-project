@@ -55,6 +55,6 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "validator": "^12.1.0",
-    "winston": "2.4.0"
+    "winston": "3.3.0"
   }
 }
