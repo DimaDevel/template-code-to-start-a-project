@@ -32,7 +32,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
-    "debug": "^4.1.1",
+    "debug": "^4.3.1",
     "express": "^4.16.4",
     "express-acl": "^2.0.5",
     "express-async-handler": "^1.1.4",
