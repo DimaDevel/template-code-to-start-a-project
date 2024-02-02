@@ -52,8 +52,8 @@
     "pug": "^2.0.3",
     "randomstring": "^1.1.5",
     "raven": "^2.6.4",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.9",
     "validator": "^12.1.0",
     "winston": "2.4.0"
   }
