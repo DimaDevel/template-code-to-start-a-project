@@ -33,7 +33,7 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
-    "express": "^4.16.4",
+    "express": "^4.19.2",
     "express-acl": "^2.0.5",
     "express-async-handler": "^1.1.4",
     "express-jwt": "^5.3.1",
