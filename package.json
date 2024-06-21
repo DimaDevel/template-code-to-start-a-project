@@ -49,7 +49,7 @@
     "passport-facebook-token": "^3.3.0",
     "passport-token-google": "^0.1.2",
     "postmark": "^2.2.4",
-    "pug": "^2.0.3",
+    "pug": "^3.0.0",
     "randomstring": "^1.1.5",
     "raven": "^2.6.4",
     "request": "^2.88.0",
